@@ -1,7 +1,7 @@
 name: get_stream_page
 description: A reactive page in GetX from a stream without the need to create a controller.
 version: 0.0.1
-homepage:
+homepage: https://github.com/MarceloRab/get_stream_page
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -14,7 +14,6 @@ dependencies:
   connectivity: ">=0.4.9+5 <5.0.0"
   #get_state_manager: ">=3.13.0 <4.0.0"
   get: ">=3.13.2 <4.0.0"
-  meta: ^1.1.8
 
 dev_dependencies:
   flutter_test:

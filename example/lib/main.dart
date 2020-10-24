@@ -75,9 +75,10 @@ class _TestGetStreamPageState extends State<TestGetStreamPage> {
       ),
       stream: streamListPerson,
       listRx: [
-        ///------------------------------------------------------------------------
-        /// Add the parameters you want to have reactivity in the body of your page.
-        ///------------------------------------------------------------------------
+        ///-------------------------------------------------------------------
+        /// Add the parameters you want to have reactivity in the body
+        /// of your page.
+        ///-------------------------------------------------------------------
         RxItem.input(Get.find<Test2Controller>().rxAuth, 'auth'),
         RxItem.input(Get.find<Test2Controller>().rxList, 'list_user'),
         RxItem.input(Get.find<Test3Controller>().rx_2, 'inter')
@@ -88,7 +89,8 @@ class _TestGetStreamPageState extends State<TestGetStreamPage> {
         ///------------------------------------------
         print(' TEST -- ${rxSet.getRx('auth').value.toString()} ');
 
-        //print('RxList -- ${rxSet.getRx('list_user').value.length.toString()}');
+        //print('RxList -- ${rxSet.getRx('list_user').value
+        // .length.toString()}');
 
         if (!rxSet.getRx('auth').value) {
           return Center(
