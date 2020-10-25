@@ -7,6 +7,16 @@ class RxGetSet {
 
   RxItem getRx(String tag) =>
       listRx.where((element) => element.tag == tag).first;
+
+/*@override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RxGetSet &&
+          runtimeType == other.runtimeType &&
+          listRx == other.listRx;
+
+  @override
+  int get hashCode => listRx.hashCode;*/
 }
 
 class RxItem {
@@ -25,11 +35,11 @@ class RxItem {
   const RxItem.input(RxInterface rx, String tag)
       : this._(rx, tag, rx is RxList);
 
-/*@override
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is RxItem && runtimeType == other.runtimeType && tag == other.tag;
 
   @override
-  int get hashCode => tag.hashCode;*/
+  int get hashCode => tag.hashCode;
 }

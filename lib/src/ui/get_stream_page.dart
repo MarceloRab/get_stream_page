@@ -24,12 +24,12 @@ class GetStreamPage<T> extends StatefulWidget {
   /// [stream] error.
   final WidgetsErrorBuilder widgetErrorBuilder;
 
-  ///[widgetBuilder] This function is launched every time we receive
+  ///[obxWidgetBuilder] This function is launched every time we receive
   ///snapshot.data through the stream. To set up your page you receive
   ///the context, the [streamObject] which is snapshot.data and an [RxGetSet]
   ///object to harvest the reactive variable by the tag. You can present
   ///something if the user is not logged in, for example.
-  final GetWidgetBuilder<T> widgetBuilder;
+  final GetWidgetBuilder<T> obxWidgetBuilder;
 
   /// [widgetOffConnectyWaiting] Only shows something when it is disconnected
   /// and still doesn't have the first value in the stream. If the connection
@@ -40,7 +40,6 @@ class GetStreamPage<T> extends StatefulWidget {
   /// [floatingActionButton] , [pageDrawer] ,
   /// [floatingActionButtonLocation] ,
   /// [floatingActionButtonAnimator]  ...
-  /// ...
   /// are passed on to the Scaffold.
   final Widget floatingActionButton;
   final FloatingActionButtonLocation floatingActionButtonLocation;
@@ -87,7 +86,7 @@ class GetStreamPage<T> extends StatefulWidget {
   const GetStreamPage(
       {Key key,
       @required this.stream,
-      @required this.widgetBuilder,
+      @required this.obxWidgetBuilder,
       this.listRx = const <RxItem>[],
       this.widgetErrorBuilder,
       this.widgetWaiting,
@@ -128,10 +127,6 @@ class GetStreamPage<T> extends StatefulWidget {
 }
 
 class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
-  //List<DisposableInterface> _listControllers;
-
-  //Rx<T> innerController;
-
   StreamSubscription<T> _subscription;
 
   GetStreamController<T> _controller;
@@ -145,7 +140,9 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
   StreamSubscription _subscriptionConnecty;
   ConnectController _connectyController;
 
-  T objesctStream;
+  //T objesctStream;
+
+  bool haveData = false;
 
   Widget _iconConnectyOffAppBar;
 
@@ -173,6 +170,10 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
   void didUpdateWidget(covariant GetStreamPage<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    /*if (oldWidget.listRx != widget.listRx) {
+      _rxSet = RxGetSet(widget.listRx);
+    }*/
+
     if (oldWidget.stream != widget.stream) {
       if (_subscription != null) {
         _unsubscribeStream();
@@ -190,7 +191,8 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         _controller.afterError(Exception('It cannot return null. 😢'));
         return;
       } else {
-        objesctStream ??= data;
+        //objesctStream ??= data;
+        haveData = true;
         downConnectyWithoutData = false;
         _unsubscribeConnecty();
         _controller.afterData(data);
@@ -220,7 +222,8 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         setState(() {
           downConnectyWithoutData = true;
         });
-      } else if (isConnected && objesctStream == null) {
+        //} else if (isConnected && objesctStream == null) {
+      } else if (isConnected && !haveData) {
         setState(() {
           downConnectyWithoutData = false;
           _controller.afterConnected();
@@ -269,22 +272,6 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
     );
   }
 
-  /*List<RxItem> get list {
-
-    List<RxItem> list = [];
-    for (var i = 0; i < widget.listRx.length; ++i) {
-      if(widget.listRx[i] is RxList){
-        list.add(widget.listRx[i].rx as RxList);
-
-      } else
-        {
-          list.add(widget.listRx[i]);
-        }
-
-
-    }
-  }*/
-
   Widget buildBody() {
     return Obx(() {
       if (downConnectyWithoutData) {
@@ -300,7 +287,7 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         return buildWidgetError(_controller.snapshot.error);
       }
 
-      return widget.widgetBuilder(
+      return widget.obxWidgetBuilder(
           //context, _controller.snapshot.data, widget.listRx);
           context,
           _controller.snapshot.data,

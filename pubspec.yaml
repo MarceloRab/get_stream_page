@@ -1,6 +1,6 @@
 name: get_stream_page
 description: A reactive page in GetX from a stream without the need to create a controller.
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/MarceloRab/get_stream_page
 
 environment:
